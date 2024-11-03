@@ -20,8 +20,8 @@ public class Horse extends ChessPiece {
         if (line == toLine && column == toColumn) return false;
 
         // check movement complies with the Horse rules
-        int deltaX = Math.abs(line - toLine);
-        int deltaY = Math.abs(column - toColumn);
+        int deltaX = Math.abs(column - toColumn);
+        int deltaY = Math.abs(line - toLine);
 
         return (deltaX == 1 && deltaY == 2) || (deltaX == 2 && deltaY == 1);
     }
