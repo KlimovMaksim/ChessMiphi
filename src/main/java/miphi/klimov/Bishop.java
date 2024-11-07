@@ -19,6 +19,7 @@ public class Bishop extends ChessPiece {
         // check end and start position are different
         if (line == toLine && column == toColumn) return false;
 
+        // check movement complies with the Bishop rules
         int deltaX = Math.abs(column - toColumn);
         int deltaY = Math.abs(line - toLine);
 
