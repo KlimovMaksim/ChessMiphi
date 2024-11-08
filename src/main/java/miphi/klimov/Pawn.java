@@ -19,23 +19,36 @@ public class Pawn extends ChessPiece {
         // check end and start position are different
         if (line == toLine && column == toColumn) return false;
 
-        // check pawn moves only vertically
-        if (column != toColumn) return false;
+        // check end position is enemy
+        if (chessBoard.board[toLine][toColumn] != null
+                && chessBoard.board[toLine][toColumn].getColor().equals(this.color)) return false;
 
+        // check movement complies with the White Pawn rules
         if (color.equals("White")) {
             // first move is 2 cells forward
-            if (line == 1 && toLine == line + 2) return true;
+            if (line == 1 && toLine == line + 2 && column == toColumn) return chessBoard.board[toLine][toColumn] == null;
 
             // usual move is 1 cell forward
-            if (toLine == line + 1) return true;
+            if (toLine == line + 1 && column == toColumn) return chessBoard.board[toLine][toColumn] == null;
+
+            // eat
+            if (toLine == line + 1 && (toColumn == column + 1 || toColumn == column - 1)) {
+                return true;
+            }
         }
 
+        // check movement complies with the Black Pawn rules
         if (color.equals("Black")) {
             // first move is 2 cells forward
-            if (line == 6 && toLine == line - 2) return true;
+            if (line == 6 && toLine == line - 2 && column == toColumn) return chessBoard.board[toLine][toColumn] == null;
 
             // usual move is 1 cell forward
-            if (toLine == line - 1) return true;
+            if (toLine == line - 1 && column == toColumn) return chessBoard.board[toLine][toColumn] == null;
+
+            // eat
+            if (toLine == line - 1 && (toColumn == column + 1 || toColumn == column - 1)) {
+                return true;
+            }
         }
 
         return false;

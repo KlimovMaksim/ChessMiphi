@@ -19,6 +19,10 @@ public class King extends ChessPiece {
         // check end and start position are different
         if (line == toLine && column == toColumn) return false;
 
+        // check end position is enemy
+        if (chessBoard.board[toLine][toColumn] != null
+                && chessBoard.board[toLine][toColumn].getColor().equals(this.color)) return false;
+
         // check movement complies with the King rules
         int deltaX = Math.abs(column - toColumn);
         int deltaY = Math.abs(line - toLine);

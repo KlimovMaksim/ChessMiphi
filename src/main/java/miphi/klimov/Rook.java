@@ -19,8 +19,31 @@ public class Rook extends ChessPiece {
         // check end and start position are different
         if (line == toLine && column == toColumn) return false;
 
+        // check end position is enemy
+        if (chessBoard.board[toLine][toColumn] != null
+                && chessBoard.board[toLine][toColumn].getColor().equals(this.color)) return false;
+
         // check movement complies with the Rook rules
-        return !(line != toLine && column != toColumn);
+        if (line != toLine && column != toColumn) return false;
+
+        // check way is free
+        if (line == toLine) { // horizontal movement
+            int step = (toColumn > column) ? 1 : -1;
+            for (int currentColumn = column + step; currentColumn != toColumn; currentColumn += step) {
+                if (chessBoard.board[line][currentColumn] != null) {
+                    return false; // if there is a piece on the way, no move is possible
+                }
+            }
+        } else { // vertical movement
+            int step = (toLine > line) ? 1 : -1;
+            for (int currentLine = line + step; currentLine != toLine; currentLine += step) {
+                if (chessBoard.board[currentLine][column] != null) {
+                    return false; // if there is a piece on the way, no move is possible
+                }
+            }
+        }
+
+        return true;
     }
 
     @Override

@@ -19,11 +19,31 @@ public class Bishop extends ChessPiece {
         // check end and start position are different
         if (line == toLine && column == toColumn) return false;
 
+        // check end position is enemy
+        if (chessBoard.board[toLine][toColumn] != null
+                && chessBoard.board[toLine][toColumn].getColor().equals(this.color)) return false;
+
         // check movement complies with the Bishop rules
         int deltaX = Math.abs(column - toColumn);
         int deltaY = Math.abs(line - toLine);
+        if (deltaX != deltaY) return false;
 
-        return deltaX == deltaY;
+        // check way is free
+        int stepX = (toLine > line) ? 1 : -1;
+        int stepY = (toColumn > column) ? 1 : -1;
+
+        int currentLine = line + stepX;
+        int currentColumn = column + stepY;
+
+        while (currentLine != toLine && currentColumn != toColumn) {
+            if (chessBoard.board[currentLine][currentColumn] != null) {
+                return false; // if there is a piece on the way, no move is possible
+            }
+            currentLine += stepX;
+            currentColumn += stepY;
+        }
+
+        return true;
     }
 
     @Override
