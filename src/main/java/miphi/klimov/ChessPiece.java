@@ -5,6 +5,10 @@ public abstract class ChessPiece {
     String color;
     boolean check;
 
+    {
+        check = true;
+    }
+
     public ChessPiece(String colour) {
         this.color = colour;
     }
