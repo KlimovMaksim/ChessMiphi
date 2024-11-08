@@ -13,20 +13,11 @@ public class Horse extends ChessPiece {
 
     @Override
     public boolean canMoveToPosition(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
-        // check end position is within the chessboard
-        if (!chessBoard.checkPos(toLine) || !chessBoard.checkPos(toColumn)) return false;
-
-        // check end and start position are different
-        if (line == toLine && column == toColumn) return false;
-
-        // check end position is enemy
-        if (chessBoard.board[toLine][toColumn] != null
-                && chessBoard.board[toLine][toColumn].getColor().equals(this.color)) return false;
+        if (!isValidMovePosition(chessBoard, line, column, toLine, toColumn)) return false;
 
         // check movement complies with the Horse rules
         int deltaX = Math.abs(column - toColumn);
         int deltaY = Math.abs(line - toLine);
-
         return (deltaX == 1 && deltaY == 2) || (deltaX == 2 && deltaY == 1);
     }
 

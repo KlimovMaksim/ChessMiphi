@@ -13,42 +13,25 @@ public class Pawn extends ChessPiece {
 
     @Override
     public boolean canMoveToPosition(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
-        // check end position is within the chessboard
-        if (!chessBoard.checkPos(toLine) || !chessBoard.checkPos(toColumn)) return false;
+        if (!isValidMovePosition(chessBoard, line, column, toLine, toColumn)) return false;
 
-        // check end and start position are different
-        if (line == toLine && column == toColumn) return false;
+        int direction = color.equals("White") ? 1 : -1;
+        int startLine = color.equals("White") ? 1 : 6;
 
-        // check end position is enemy
-        if (chessBoard.board[toLine][toColumn] != null
-                && chessBoard.board[toLine][toColumn].getColor().equals(this.color)) return false;
-
-        // check movement complies with the White Pawn rules
-        if (color.equals("White")) {
-            // first move is 2 cells forward
-            if (line == 1 && toLine == line + 2 && column == toColumn) return chessBoard.board[toLine][toColumn] == null;
-
-            // usual move is 1 cell forward
-            if (toLine == line + 1 && column == toColumn) return chessBoard.board[toLine][toColumn] == null;
-
-            // eat
-            if (toLine == line + 1 && (toColumn == column + 1 || toColumn == column - 1)) {
-                return true;
-            }
+        // check first move
+        if (line == startLine && toLine == line + 2 * direction && column == toColumn) {
+            return chessBoard.board[toLine][toColumn] == null && chessBoard.board[line + direction][column] == null;
         }
 
-        // check movement complies with the Black Pawn rules
-        if (color.equals("Black")) {
-            // first move is 2 cells forward
-            if (line == 6 && toLine == line - 2 && column == toColumn) return chessBoard.board[toLine][toColumn] == null;
+        // check usual move
+        if (toLine == line + direction && column == toColumn) {
+            return chessBoard.board[toLine][toColumn] == null;
+        }
 
-            // usual move is 1 cell forward
-            if (toLine == line - 1 && column == toColumn) return chessBoard.board[toLine][toColumn] == null;
-
-            // eat
-            if (toLine == line - 1 && (toColumn == column + 1 || toColumn == column - 1)) {
-                return true;
-            }
+        // eat
+        if (toLine == line + direction && (toColumn == column + 1 || toColumn == column - 1)) {
+            ChessPiece targetPiece = chessBoard.board[toLine][toColumn];
+            return targetPiece != null && !targetPiece.getColor().equals(this.color);
         }
 
         return false;

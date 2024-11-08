@@ -13,20 +13,11 @@ public class King extends ChessPiece {
 
     @Override
     public boolean canMoveToPosition(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
-        // check end position is within the chessboard
-        if (!chessBoard.checkPos(toLine) || !chessBoard.checkPos(toColumn)) return false;
-
-        // check end and start position are different
-        if (line == toLine && column == toColumn) return false;
-
-        // check end position is enemy
-        if (chessBoard.board[toLine][toColumn] != null
-                && chessBoard.board[toLine][toColumn].getColor().equals(this.color)) return false;
+        if (!isValidMovePosition(chessBoard, line, column, toLine, toColumn)) return false;
 
         // check movement complies with the King rules
         int deltaX = Math.abs(column - toColumn);
         int deltaY = Math.abs(line - toLine);
-
         return (deltaX <= 1) && (deltaY <= 1) && !isUnderAttack(chessBoard, toLine, toColumn);
     }
 
@@ -40,7 +31,6 @@ public class King extends ChessPiece {
             for (int j = 0; j < 8; j++) {
                 ChessPiece piece = chessBoard.board[i][j];
 
-                // check enemy piece can attack current (line, column) position
                 if (piece != null && !piece.getColor().equals(this.color)) {
                     if (piece.canMoveToPosition(chessBoard, i, j, line, column)) {
                         return true;
@@ -49,7 +39,6 @@ public class King extends ChessPiece {
             }
         }
 
-        // there are no threats
         return false;
     }
 }
